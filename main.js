@@ -58,7 +58,7 @@ function generatePopulation (num) {
     const sampleName = ('Sample ' + (i + 1));
     do {
       organismArr[i] = pAequorFactory(sampleName, mockUpStrand()); 
-    } while (!organismArr[i].willLikelySurvive); // Generate dna strands until likely survival = true
+    } while (!organismArr[i].willLikelySurvive()); // Generate dna strands until likely survival = true
     i++;
   }
   return organismArr;
