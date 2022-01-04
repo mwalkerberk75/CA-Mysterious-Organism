@@ -28,13 +28,13 @@ function pAequorFactory (specimenNum, dna) {
       this.dna.splice(mutationIndex,1,mutatedDNA); // Update DNA string with mutation
     },
     compareDNA(newpAequor) { // Compare DNA between this organism and new organism
-      let totalVariations = 0;
+      let totalSimilar = 0;
       for (let i = 0; i < newpAequor.dna.length; i++) { // Check for variances between DNA strands
-        if (!(this.dna[i] === newpAequor.dna[i])) {
-          totalVariations++;
+        if (this.dna[i] === newpAequor.dna[i]) {
+          totalSimilar++;
         }
       }
-      console.log('Specimen', this.specimenNum, 'and specimen', newpAequor.specimenNum, 'have', (100-((totalVariations/newpAequor.dna.length)*100).toFixed(2)), '% DNA in common.');
+      console.log('Specimen', this.specimenNum, 'and specimen', newpAequor.specimenNum, 'have', ((totalSimilar/newpAequor.dna.length)*100).toFixed(2), '% DNA in common.');
     },
     willLikelySurvive () {
       // Return true if 60% or more of the DNA is 'C' or 'G' 
@@ -50,14 +50,22 @@ function pAequorFactory (specimenNum, dna) {
   return pAequor;
 }
 
-// Create 30 instances of pAequor
-let pAequorArray = [];
-for (let i = 0; i < 30; i++) {
-  const sampleName = ('Sample ' + (i + 1));
-  pAequorArray.push(pAequorFactory(sampleName, mockUpStrand()));
+function generatePopulation (num) {
+  // Create surviving instances of pAequor
+  let organismArr = [];
+  let i = 0;
+  while (organismArr.length < num) { 
+    const sampleName = ('Sample ' + (i + 1));
+    do {
+      organismArr[i] = pAequorFactory(sampleName, mockUpStrand()); 
+    } while (!organismArr[i].willLikelySurvive); // Generate dna strands until likely survival = true
+    i++;
+  }
+  return organismArr;
 }
 
 // Tests
+pAequorArray = generatePopulation(30) // Generate 30 instances of surviving pAequor
 console.log(pAequorArray[14].specimenNum,pAequorArray[14].dna)
 pAequorArray[14].mutate();
 console.log(pAequorArray[14].specimenNum,pAequorArray[14].dna)
