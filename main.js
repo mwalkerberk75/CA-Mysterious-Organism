@@ -103,8 +103,7 @@ function pAequorFactory (specimenNum, dna) {
           j++;
         } while (!found);
         if (comparisonArr.length > num) { // Erase entries above the number needed
-              let k = comparisonArr.length - 1;
-              comparisonArr.pop();
+          comparisonArr.pop();
         }
       }
       return comparisonArr;
